@@ -9,18 +9,12 @@
     "dev": "webpack --config webpack/dev.ts",
     "build:watch": "webpack --watch"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/pboymt/userscript-typescript-template.git"
-  },
   "keywords": [],
   "author": "pboymt",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/pboymt/userscript-typescript-template/issues"
-  },
-  "homepage": "https://github.com/pboymt/userscript-typescript-template#readme",
   "devDependencies": {
+    "@types/jquery": "^3.5.29",
+    "@types/lodash": "^4.14.202",
     "@types/node": "^18.15.11",
     "@types/prettier": "^2.7.0",
     "@types/tampermonkey": "^4.0.5",
@@ -32,29 +26,42 @@
     "typescript": "^5.0.4",
     "webpack": "^5.64.3",
     "webpack-cli": "^5.0.1",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^5.8.0",
+    "zod": "^3.22.4"
   },
-  "userscript": {
-    "require-template": "https://cdn.jsdelivr.net/npm/${dependencyName}@${dependencyVersion}",
-    "namespace": "http://tampermonkey.net/",
-    "license": "https://opensource.org/licenses/MIT",
-    "match": [
-      "https://github.com/*",
-      "https://www.baidu.com/*"
-    ],
-    "connect": [
-      "github.com"
-    ],
-    "require": [],
-    "grant": [
-      "GM.xmlHttpRequest"
-    ],
-    "exclude": [],
-    "resources": [],
-    "keyedResources": {}
+  "userscripts": {
+    "mobile": {
+      "name": "Mobile Optimizer",
+      "version": "0.1",
+      "namespace": "http://tampermonkey.net/",
+      "match": [],
+      "require": [],
+      "grant": []
+    },
+    "neverlose": {
+      "name": "Neverlose Optimizer",
+      "version": "0.1",
+      "namespace": "http://tampermonkey.net/",
+      "match": [],
+      "require": [],
+      "grant": []
+    },
+    "wheregoes": {
+      "name": "Wheregoes Optimizer",
+      "description": "Good stuff",
+      "version": "0.1",
+      "author": "ideot",
+      "namespace": "http://tampermonkey.net/",
+      "match": [
+        "https://wheregoes.com/"
+      ],
+      "require": [],
+      "grant": []
+    }
   },
   "dependencies": {
-    "@trim21/gm-fetch": "^0.1.13",
-    "axios": "^1.3.6"
+    "dayjs": "^1.11.10",
+    "jquery": "^3.7.1",
+    "lodash": "^4.17.21"
   }
 }
