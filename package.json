@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack/prod.ts && prettier --write userscripts",
     "dev": "webpack --config webpack/dev.ts",
-    "build:watch": "webpack --watch"
+    "build:watch": "webpack --watch",
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "pboymt",
@@ -19,6 +20,9 @@
     "@types/prettier": "^2.7.0",
     "@types/tampermonkey": "^4.0.5",
     "@types/webpack": "^5.28.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.0",
+    "@typescript-eslint/parser": "^6.18.0",
+    "eslint": "^8.56.0",
     "prettier": "^2.7.1",
     "terser-webpack-plugin": "^5.3.6",
     "ts-loader": "^9.2.6",

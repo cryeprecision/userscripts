@@ -17,6 +17,7 @@ type Comment = {
   col: number
 }
 
+// Used to remove all comments except the userscript metadata comments
 const isUserscriptComment = (_node: unknown, comment: Comment): boolean => {
   return (
     comment.type === 'comment1' && /^\s(==UserScript==|==\/UserScript==|@\w+)/.test(comment.value)
@@ -28,9 +29,7 @@ const config: Configuration = {
     getProjects().map((entry) => [entry.name, `./src/${entry.name}/index.ts`]),
   ),
   target: 'web',
-  resolve: {
-    extensions: ['.ts', '.js'],
-  },
+  resolve: { extensions: ['.ts', '.js'] },
   module: {
     rules: [
       {
@@ -59,12 +58,7 @@ const config: Configuration = {
       }),
     ],
   },
-  plugins: [
-    new BannerPlugin({
-      banner: generateHeader,
-      raw: true,
-    }),
-  ],
+  plugins: [new BannerPlugin({ banner: generateHeader, raw: true })],
 }
 
 export default config

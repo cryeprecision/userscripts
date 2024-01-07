@@ -1,5 +1,4 @@
 import dayjs from 'dayjs'
-import _ from 'lodash'
 import { countInstances } from '../lib'
 
 type Age = {
@@ -43,7 +42,7 @@ type Filter = {
   shouldRemove: (self: Filter, post: Post) => boolean
 }
 
-let filter: Filter = {
+const filter: Filter = {
   forbiddenTags: ['Configs', 'Official Reselling', 'Русский'],
   forbiddenTitleWords: ['hwid'],
   maxAgeSinceCreationSeconds: 60 * 60 * 24 * 7,
@@ -138,7 +137,7 @@ const extractPost = (rawNode: Node): Post | undefined => {
   }
 }
 
-const onBodyMutation: MutationCallback = (mutations, observer) => {
+const onBodyMutation: MutationCallback = (mutations) => {
   const oldPostsRemoved = filter.postsRemoved
 
   for (const mutation of mutations) {
