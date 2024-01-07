@@ -59,6 +59,32 @@
       "grant": [],
       "icon": "https://www.google.com/s2/favicons?sz=64&domain=mobile.de",
       "run_at": "document-body"
+    },
+    "twitch": {
+      "name": "Twitch Remove Cookie Banner",
+      "description": "Remove the reappearing cookie banner",
+      "version": "1.0",
+      "author": "ideot",
+      "namespace": "http://tampermonkey.net/",
+      "match": [
+        "https://www.twitch.tv/*"
+      ],
+      "grant": [],
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=twitch.tv",
+      "run_at": "document-body"
+    },
+    "steam_search": {
+      "name": "Steam Search Filter",
+      "description": "Remove non-exact matches from steam search",
+      "version": "1.0",
+      "author": "ideot",
+      "namespace": "http://tampermonkey.net/",
+      "match": [
+        "https://steamcommunity.com/search/users/*"
+      ],
+      "grant": [],
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=steamcommunity.com",
+      "run_at": "document-body"
     }
   },
   "dependencies": {
