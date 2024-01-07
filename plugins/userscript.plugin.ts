@@ -30,18 +30,23 @@ type BannerInfo = {
 };
 
 export const generateHeader = (info: BannerInfo): string => {
+  if (!info.chunk.name) {
+    throw new Error("[generateHeader] found chunk without name");
+  }
+
   const packageJsonRaw = readFileSync(
     join(__dirname, "../package.json"),
     "utf8"
   );
+  const packageJson = PackageJsonSchema.parse(JSON.parse(packageJsonRaw));
 
-  if (!info.chunk.name) {
-    throw new Error("[generateHeader] chunk is missing a name");
+  if (!(info.chunk.name in packageJson.userscripts)) {
+    throw new Error(
+      `[generateHeader] missing userscript entry for ${info.chunk.name} in package.json`
+    );
   }
 
-  const packageJson = PackageJsonSchema.parse(JSON.parse(packageJsonRaw));
   const userscript = packageJson.userscripts[info.chunk.name];
-
   const headers = ["// ==UserScript=="];
 
   headers.push(`// @name ${userscript.name}`);

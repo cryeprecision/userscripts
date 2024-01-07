@@ -5,7 +5,7 @@
   "main": "userscript/index.user.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack/prod.ts",
+    "build": "webpack --config webpack/prod.ts && prettier --write userscripts",
     "dev": "webpack --config webpack/dev.ts",
     "build:watch": "webpack --watch"
   },
@@ -30,32 +30,26 @@
     "zod": "^3.22.4"
   },
   "userscripts": {
-    "mobile": {
-      "name": "Mobile Optimizer",
-      "version": "0.1",
-      "namespace": "http://tampermonkey.net/",
-      "match": [],
-      "require": [],
-      "grant": []
-    },
     "neverlose": {
-      "name": "Neverlose Optimizer",
-      "version": "0.1",
-      "namespace": "http://tampermonkey.net/",
-      "match": [],
-      "require": [],
-      "grant": []
-    },
-    "wheregoes": {
-      "name": "Wheregoes Optimizer",
-      "description": "Good stuff",
-      "version": "0.1",
+      "name": "Neverlose Hide Spam",
+      "description": "Hide config posts and other spam",
+      "version": "1.0",
       "author": "ideot",
       "namespace": "http://tampermonkey.net/",
       "match": [
-        "https://wheregoes.com/"
+        "https://forum.neverlose.cc/*"
       ],
-      "require": [],
+      "grant": [],
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=neverlose.cc",
+      "run_at": "document-body"
+    },
+    "mobile": {
+      "name": "Neverlose Hide Spam",
+      "description": "Hide config posts and other spam",
+      "version": "1.0",
+      "author": "ideot",
+      "namespace": "http://tampermonkey.net/",
+      "match": [],
       "grant": []
     }
   },
