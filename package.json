@@ -85,6 +85,19 @@
       "grant": [],
       "icon": "https://www.google.com/s2/favicons?sz=64&domain=steamcommunity.com",
       "run_at": "document-body"
+    },
+    "youtube_shorts_to_video": {
+      "name": "YouTube Shorts to Video",
+      "description": "Redirect YouTube shorts to the normal video interface",
+      "version": "1.0",
+      "author": "ideot",
+      "namespace": "http://tampermonkey.net/",
+      "match": [
+        "https://www.youtube.com/*"
+      ],
+      "grant": [],
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=youtube.com",
+      "run_at": "document-start"
     }
   },
   "dependencies": {
