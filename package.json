@@ -48,13 +48,17 @@
       "run_at": "document-body"
     },
     "mobile": {
-      "name": "Neverlose Hide Spam",
-      "description": "Hide config posts and other spam",
+      "name": "Mobile Better Images",
+      "description": "Better image viewing for Mobile",
       "version": "1.0",
       "author": "ideot",
       "namespace": "http://tampermonkey.net/",
-      "match": [],
-      "grant": []
+      "match": [
+        "https://suchen.mobile.de/fahrzeuge/details.html?*"
+      ],
+      "grant": [],
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=mobile.de",
+      "run_at": "document-body"
     }
   },
   "dependencies": {

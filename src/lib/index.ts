@@ -6,4 +6,10 @@ export const countInstances = (hay: string, needle: string): number => {
   return count
 }
 
-export {}
+export const copyToClipboard = async (str: string) => {
+  try {
+    await navigator.clipboard.writeText(str)
+  } catch (err) {
+    alert("couldn't copy text to clipboard")
+  }
+}
