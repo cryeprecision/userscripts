@@ -1,3 +1,5 @@
+export {}
+
 import dayjs from 'dayjs'
 import { countInstances } from '../lib'
 
