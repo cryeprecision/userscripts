@@ -2,7 +2,6 @@
   "name": "userscript-typescript-template",
   "version": "2.0.2",
   "description": "Template repo using Webpack and TypeScript to build your userscript for Tampermonkey and more extensions.",
-  "main": "userscript/index.user.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack/prod.ts && prettier --write userscripts",
@@ -10,7 +9,11 @@
     "build:watch": "webpack --watch",
     "lint": "eslint . --ext .ts"
   },
-  "keywords": [],
+  "keywords": [
+    "userscript",
+    "collection",
+    "typescript"
+  ],
   "author": "pboymt",
   "license": "MIT",
   "devDependencies": {
