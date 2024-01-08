@@ -45,7 +45,8 @@ const config: Configuration = {
     lodash: '_',
   },
   optimization: {
-    minimize: true,
+    // https://greasyfork.org/en/help/code-rules
+    minimize: false,
     minimizer: [
       new TerserPlugin({
         minify: TerserPlugin.terserMinify,
