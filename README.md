@@ -11,3 +11,9 @@ Based on [github.com/pboymt/userscript-typescript-template](https://github.com/p
   dependency being inlined into the compiled userscript. Dependencies (not `devDependencies`) from
   the `./package.json` will be appended to the userscript header in
   `./plugins/userscript.plugin.ts`.
+
+## To Do
+
+- [ ] Find a way to embed the userscript header in `./src/<name>/index.ts` e.g. adding a
+      `export const userscriptConfig: UserscriptConfig = { ... }` to not clutter the
+      `./package.json` with them.
