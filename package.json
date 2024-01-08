@@ -4,7 +4,7 @@
   "description": "Template repo using Webpack and TypeScript to build your userscript for Tampermonkey and more extensions.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config webpack/prod.ts && prettier --write userscripts",
+    "build": "webpack --config webpack/prod.ts",
     "dev": "webpack --config webpack/dev.ts",
     "build:watch": "webpack --watch",
     "lint": "eslint . --ext .ts"
@@ -101,6 +101,32 @@
       "grant": [],
       "icon": "https://www.google.com/s2/favicons?sz=64&domain=youtube.com",
       "run_at": "document-start"
+    },
+    "youtube_remove_shorts": {
+      "name": "YouTube Remove Shorts",
+      "description": "Remove YouTube shorts tab from the home page",
+      "version": "1.0",
+      "author": "ideot",
+      "namespace": "http://tampermonkey.net/",
+      "match": [
+        "https://www.youtube.com/"
+      ],
+      "grant": [],
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=youtube.com",
+      "run_at": "document-body"
+    },
+    "elitepvpers": {
+      "name": "Remove elitepvpers Cheat Posts",
+      "description": "Remove elitepvpers cheat posts",
+      "version": "1.0",
+      "author": "ideot",
+      "namespace": "http://tampermonkey.net/",
+      "match": [
+        "https://www.elitepvpers.com/forum/*"
+      ],
+      "grant": [],
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=elitepvpers.com",
+      "run_at": "document-body"
     }
   },
   "dependencies": {
