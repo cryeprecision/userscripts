@@ -23,6 +23,21 @@ const onBodyMutations: Record<string, MutationCallback> = {
       }
     }
   },
+  remove_non_game_prime: (mutations) => {
+    for (const mutation of mutations) {
+      for (const added of mutation.addedNodes) {
+        const header = $(added).find('div.prime-offer-header-card')
+        if (header.length === 0) continue
+
+        const offers = header.siblings('div')
+        for (const offer of offers) {
+          if ($(offer).find('a').text() !== 'Spiel abholen') {
+            $(offer).remove()
+          }
+        }
+      }
+    }
+  },
 }
 
 ;(() => {
