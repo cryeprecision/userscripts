@@ -13,3 +13,7 @@ export const copyToClipboard = async (str: string) => {
     alert("couldn't copy text to clipboard")
   }
 }
+
+export const countWords = (hay: string, needles: string[]): number => {
+  return needles.reduce<number>((acc, next) => acc + (hay.includes(next) ? 1 : 0), 0)
+}
