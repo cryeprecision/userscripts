@@ -84,7 +84,7 @@ const extractPost = (rawNode: Node): Post | undefined => {
     if (!node.is('tr') || !node.hasClass('topic-list-item')) return
 
     const addedNodeTag = node.find(
-      'td.main-link > div.link-bottom-line > a > span.badge-category > span.category-name',
+      'td.main-link > div.link-bottom-line > a > span.badge-category > span.badge-category__name',
     )
     if (addedNodeTag.length === 0) return
 
@@ -116,7 +116,7 @@ const extractPost = (rawNode: Node): Post | undefined => {
     if (!node.is('div') || !node.hasClass('latest-topic-list-item')) return
 
     const addedNodeTag = node.find(
-      'div.main-link > div.bottom-row > a.badge-wrapper > span.badge-category > span.category-name',
+      'div.main-link > div.bottom-row > a.badge-category__wrapper > span.badge-category > span.badge-category__name',
     )
     if (addedNodeTag.length === 0) return
 
