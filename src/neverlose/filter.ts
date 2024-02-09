@@ -51,6 +51,7 @@ export class Thread extends Filterable {
   private lastPost?: number
   private tag?: string
   private category: string
+  private creator?: string
 
   public constructor(args: {
     node: Node
@@ -74,6 +75,10 @@ export class Thread extends Filterable {
      * Category embedded in the css class
      */
     category: string
+    /**
+     * User that created the thread
+     */
+    creator?: string
   }) {
     super(args.node)
     this.title = args.title
@@ -81,6 +86,7 @@ export class Thread extends Filterable {
     this.lastPost = args.lastPost
     this.tag = args.tag
     this.category = args.category
+    this.creator = args.creator
   }
 
   public override passesFilter(filter: Filter): boolean {
@@ -88,11 +94,15 @@ export class Thread extends Filterable {
       return false
     }
 
-    if (any(filter.forbiddenTitleWords, (word) => this.title.includes(word))) {
+    if (this.creator !== undefined && filter.forbiddenUsers.indexOf(this.creator) !== -1) {
       return false
     }
 
     if (any(filter.forbiddenCategories, (cat) => this.category === cat)) {
+      return false
+    }
+
+    if (any(filter.forbiddenTitleWords, (word) => this.title.includes(word))) {
       return false
     }
 

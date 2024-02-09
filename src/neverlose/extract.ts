@@ -111,6 +111,13 @@ export class ExtractThreads extends Extractor<Thread> {
           ?.substring('category-'.length)
         if (category === undefined) return
 
+        const creator = $(addedNode)
+          .find<HTMLAnchorElement>('> td.posters > a:nth-child(1)')
+          .attr('href')
+          ?.replace('https://forum.neverlose.cc/u/', '')
+          .replace('/u/', '')
+          .toLowerCase()
+
         threads.push(
           new Thread({
             node: addedNode,
@@ -119,6 +126,7 @@ export class ExtractThreads extends Extractor<Thread> {
             lastPost: age.latest,
             tag,
             category,
+            creator,
           }),
         )
       })()
