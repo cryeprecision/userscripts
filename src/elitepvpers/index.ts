@@ -1,6 +1,6 @@
-import { countWords } from '../lib'
-
 export {}
+
+import { countWords } from '../lib'
 
 const blackList = '\
 aim,esp,wallhack,internal,external,triggerbot,cheat,script,macro,semirage,boost,media,pin,\

@@ -5,6 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack/prod.ts",
+    "build-min": "webpack --config webpack/prod-min.ts",
     "dev": "webpack --config webpack/dev.ts",
     "build:watch": "webpack --watch",
     "lint": "eslint . --ext .ts"
@@ -127,6 +128,19 @@
       "grant": [],
       "icon": "https://www.google.com/s2/favicons?sz=64&domain=elitepvpers.com",
       "run_at": "document-body"
+    },
+    "gmx": {
+      "name": "Autofill GMX Account Creation",
+      "description": "Autofill GMX account creation",
+      "version": "1.0",
+      "author": "ideot",
+      "namespace": "http://tampermonkey.net/",
+      "match": [
+        "https://registrierung.gmx.net/*"
+      ],
+      "grant": [],
+      "icon": "https://www.google.com/s2/favicons?sz=64&domain=gmx.net",
+      "run_at": "document-idle"
     }
   },
   "dependencies": {
