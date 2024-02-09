@@ -17,24 +17,29 @@
   ],
   "author": "pboymt",
   "license": "MIT",
+  "dependencies": {
+    "dayjs": "^1.11.10",
+    "jquery": "^3.7.1",
+    "lodash": "^4.17.21"
+  },
   "devDependencies": {
     "@types/jquery": "^3.5.29",
     "@types/lodash": "^4.14.202",
-    "@types/node": "^18.15.11",
-    "@types/prettier": "^2.7.0",
-    "@types/tampermonkey": "^4.0.5",
-    "@types/webpack": "^5.28.0",
-    "@typescript-eslint/eslint-plugin": "^6.18.0",
-    "@typescript-eslint/parser": "^6.18.0",
+    "@types/node": "^20.11.17",
+    "@types/prettier": "^3.0.0",
+    "@types/tampermonkey": "^5.0.2",
+    "@types/webpack": "^5.28.5",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.56.0",
-    "prettier": "^2.7.1",
-    "terser-webpack-plugin": "^5.3.6",
-    "ts-loader": "^9.2.6",
-    "ts-node": "^10.4.0",
-    "typescript": "^5.0.4",
-    "webpack": "^5.64.3",
-    "webpack-cli": "^5.0.1",
-    "webpack-merge": "^5.8.0",
+    "prettier": "^3.2.5",
+    "terser-webpack-plugin": "^5.3.10",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^5.10.0",
     "zod": "^3.22.4"
   },
   "userscripts": {
@@ -130,9 +135,5 @@
       "run_at": "document-body"
     }
   },
-  "dependencies": {
-    "dayjs": "^1.11.10",
-    "jquery": "^3.7.1",
-    "lodash": "^4.17.21"
-  }
+  "packageManager": "yarn@4.1.0"
 }

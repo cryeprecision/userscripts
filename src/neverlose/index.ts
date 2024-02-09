@@ -1,7 +1,7 @@
 export {}
 
-import dayjs from 'dayjs'
 import { countInstances } from '../lib'
+import dayjs from 'dayjs'
 
 type Age = {
   secondsSinceCreation: number
