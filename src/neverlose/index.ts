@@ -33,11 +33,13 @@ type Post = {
   title: string
   tag: string
   age: Age
+  poster: string
 }
 
 type Filter = {
   forbiddenTags: string[]
   forbiddenTitleWords: string[]
+  forbiddenUsers: string[]
   maxAgeSinceCreationSeconds?: number
   postsRemoved: number
 
@@ -47,10 +49,11 @@ type Filter = {
 const filter: Filter = {
   forbiddenTags: ['Configs', 'Official Reselling', 'Русский'],
   forbiddenTitleWords: ['hwid'],
+  forbiddenUsers: ['bingaan'],
   maxAgeSinceCreationSeconds: 60 * 60 * 24 * 7,
   postsRemoved: 0,
 
-  shouldRemove: (self: Filter, { title, tag, age }: Post): boolean => {
+  shouldRemove: (self: Filter, { title, tag, age, poster }: Post): boolean => {
     return (
       // contains a forbidden tag
       self.forbiddenTags.indexOf(tag) !== -1 ||
@@ -59,6 +62,8 @@ const filter: Filter = {
       // is too old
       (self.maxAgeSinceCreationSeconds &&
         age.secondsSinceCreation > self.maxAgeSinceCreationSeconds) ||
+      // was posted by a forbidden user
+      self.forbiddenUsers.indexOf(poster) !== -1 ||
       // cast to bool
       false
     )
@@ -94,6 +99,9 @@ const extractPost = (rawNode: Node): Post | undefined => {
     const addedNodeCreated = node.find('td.age').attr('title')
     if (!addedNodeCreated || addedNodeCreated.length === 0) return
 
+    const addedNodePoster = node.find('td.posters > a').eq(0).attr('href')
+    if (!addedNodePoster || addedNodePoster.length === 0) return
+
     const age = parseAge(addedNodeCreated)
     if (!age) return
 
@@ -101,6 +109,7 @@ const extractPost = (rawNode: Node): Post | undefined => {
       title: addedNodeTitle.text().toLowerCase().trim(),
       tag: addedNodeTag.text().trim(),
       age,
+      poster: addedNodePoster.replace('/u/', ''),
     }
   }
 
@@ -128,6 +137,9 @@ const extractPost = (rawNode: Node): Post | undefined => {
       .attr('title')
     if (!addedNodeCreated || addedNodeCreated.length === 0) return
 
+    const addedNodePoster = node.find('div.topic-poster > a').eq(0).attr('href')
+    if (!addedNodePoster || addedNodePoster.length === 0) return
+
     const age = parseAge(addedNodeCreated)
     if (!age) return
 
@@ -135,6 +147,7 @@ const extractPost = (rawNode: Node): Post | undefined => {
       title: addedNodeTitle.text().toLowerCase().trim(),
       tag: addedNodeTag.text().trim(),
       age,
+      poster: addedNodePoster.replace('/u/', ''),
     }
   }
 }
