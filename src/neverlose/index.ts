@@ -1,172 +1,49 @@
 export {}
 
-import { countInstances } from '../lib'
-import dayjs from 'dayjs'
+import { ExtractPosts, ExtractThreads, Extractor } from './extract'
+import { Filter, Filterable } from './filter'
 
-type Age = {
-  secondsSinceCreation: number
-  secondsSinceLastActivity?: number
-}
-
-// Parse datetime strings like
-// - Created: Dec 8, 2023 8:35 pm\nLatest: Jan 4, 2024 7:16 pm
-// - Created: Jan 4, 2024 4:37 pm
-const parseDate = (str: string): number | undefined => {
-  const parsed = dayjs(str, 'MMM D, YYYY h:mm a')
-  return parsed.isValid() ? parsed.unix() : undefined
-}
-
-const parseAge = (str: string): Age | undefined => {
-  const parts = str.split('\n').map((part) => {
-    return parseDate(part.substring(part.indexOf(':') + 2))
-  })
-  if (parts.length === 0 || !parts[0]) return
-
-  const now = new Date().getTime() / 1_000
-  return {
-    secondsSinceCreation: now - parts[0],
-    secondsSinceLastActivity: parts.length > 1 && parts[1] ? now - parts[1] : undefined,
-  }
-}
-
-type Post = {
-  title: string
-  tag: string
-  age: Age
-  poster: string
-}
-
-type Filter = {
-  forbiddenTags: string[]
-  forbiddenTitleWords: string[]
-  forbiddenUsers: string[]
-  maxAgeSinceCreationSeconds?: number
-  postsRemoved: number
-
-  shouldRemove: (self: Filter, post: Post) => boolean
-}
-
-const filter: Filter = {
+const gFilter: Filter = {
   forbiddenTags: ['Configs', 'Official Reselling', 'Русский'],
-  forbiddenTitleWords: ['hwid'],
+  forbiddenTitleWords: ['hwid', 'crash', 'aa', 'cfg', 'config'],
   forbiddenUsers: ['bingaan'],
+  forbiddenCategories: ['cs2-configs-cs2', 'offtop-17-category', 'reselling'],
   maxAgeSinceCreationSeconds: 60 * 60 * 24 * 7,
-  postsRemoved: 0,
-
-  shouldRemove: (self: Filter, { title, tag, age, poster }: Post): boolean => {
-    return (
-      // contains a forbidden tag
-      self.forbiddenTags.indexOf(tag) !== -1 ||
-      // contains a forbidden title word
-      self.forbiddenTitleWords.findIndex((word) => title.indexOf(word) !== -1) !== -1 ||
-      // is too old
-      (self.maxAgeSinceCreationSeconds &&
-        age.secondsSinceCreation > self.maxAgeSinceCreationSeconds) ||
-      // was posted by a forbidden user
-      self.forbiddenUsers.indexOf(poster) !== -1 ||
-      // cast to bool
-      false
-    )
-  },
 }
 
-const extractPost = (rawNode: Node): Post | undefined => {
-  // make sure we're viewing the forum
-  if (!window.location.href.startsWith('https://forum.neverlose.cc/')) return
-  const relativePath = window.location.href.substring('https://forum.neverlose.cc/'.length)
-
-  const node = $(rawNode)
-
-  // we're viewing a category where threads are tagged
-  // e.g. `https://forum.neverlose.cc/c/cs2/39`
-  // or we're viewing the list of latest posts
-  // e.g. `https://forum.neverlose.cc/latest`
-  if (
-    countInstances(relativePath, '/') === 2 ||
-    relativePath === 'latest/' ||
-    relativePath === 'latest'
-  ) {
-    if (!node.is('tr') || !node.hasClass('topic-list-item')) return
-
-    const addedNodeTag = node.find(
-      'td.main-link > div.link-bottom-line > a > span.badge-category > span.badge-category__name',
-    )
-    if (addedNodeTag.length === 0) return
-
-    const addedNodeTitle = node.find('td.main-link > span.link-top-line > a.title')
-    if (addedNodeTitle.length === 0) return
-
-    const addedNodeCreated = node.find('td.age').attr('title')
-    if (!addedNodeCreated || addedNodeCreated.length === 0) return
-
-    const addedNodePoster = node.find('td.posters > a').eq(0).attr('href')
-    if (!addedNodePoster || addedNodePoster.length === 0) return
-
-    const age = parseAge(addedNodeCreated)
-    if (!age) return
-
-    return {
-      title: addedNodeTitle.text().toLowerCase().trim(),
-      tag: addedNodeTag.text().trim(),
-      age,
-      poster: addedNodePoster.replace('/u/', ''),
-    }
-  }
-
-  // we're viewing a sub-category, thread aren't tagged here
-  // e.g. `https://forum.neverlose.cc/c/cs2/problems-cs2/40`
-  if (countInstances(relativePath, '/') === 3) {
-    return
-  }
-
-  // we're viewing the homepage of the forum
-  // e.g. `https://forum.neverlose.cc/`
-  if (relativePath.length === 0) {
-    if (!node.is('div') || !node.hasClass('latest-topic-list-item')) return
-
-    const addedNodeTag = node.find(
-      'div.main-link > div.bottom-row > a.badge-category__wrapper > span.badge-category > span.badge-category__name',
-    )
-    if (addedNodeTag.length === 0) return
-
-    const addedNodeTitle = node.find('div.main-link > div.top-row > a.title')
-    if (addedNodeTitle.length === 0) return
-
-    const addedNodeCreated = node
-      .find('div.topic-stats > div.topic-last-activity > a')
-      .attr('title')
-    if (!addedNodeCreated || addedNodeCreated.length === 0) return
-
-    const addedNodePoster = node.find('div.topic-poster > a').eq(0).attr('href')
-    if (!addedNodePoster || addedNodePoster.length === 0) return
-
-    const age = parseAge(addedNodeCreated)
-    if (!age) return
-
-    return {
-      title: addedNodeTitle.text().toLowerCase().trim(),
-      tag: addedNodeTag.text().trim(),
-      age,
-      poster: addedNodePoster.replace('/u/', ''),
-    }
-  }
-}
+const gExtractors: Extractor[] = [new ExtractPosts(), new ExtractThreads()]
 
 const onBodyMutation: MutationCallback = (mutations) => {
-  const oldPostsRemoved = filter.postsRemoved
-
   for (const mutation of mutations) {
-    for (const node of mutation.addedNodes) {
-      const post = extractPost(node)
-      if (post && filter.shouldRemove(filter, post)) {
-        $(mutation.addedNodes).remove()
-        filter.postsRemoved += mutation.addedNodes.length
+    if (mutation.type === 'childList') {
+      for (const node of mutation.addedNodes) {
+        // extract all filterables
+        const filterables = gExtractors.reduce<Filterable[]>((acc, next) => {
+          const filterables = next.tryExtract(node)
+          if (filterables !== null) acc.push(...filterables)
+          return acc
+        }, [])
+        // filter them out
+        filterables.forEach((filterable) => {
+          if (!filterable.passesFilter(gFilter)) {
+            filterable.filterOut()
+          }
+        })
       }
+    } else if (mutation.type === 'attributes') {
+      // extract all filterables
+      const filterables = gExtractors.reduce<Filterable[]>((acc, next) => {
+        const filterables = next.tryExtract(mutation.target)
+        if (filterables !== null) acc.push(...filterables)
+        return acc
+      }, [])
+      // filter them out
+      filterables.forEach((filterable) => {
+        if (!filterable.passesFilter(gFilter)) {
+          filterable.filterOut()
+        }
+      })
     }
-  }
-
-  if (filter.postsRemoved !== oldPostsRemoved) {
-    console.log(`removed ${filter.postsRemoved} posts`)
   }
 }
 
@@ -178,5 +55,22 @@ const onBodyMutation: MutationCallback = (mutations) => {
   observer.observe(document.querySelector('body')!, {
     childList: true,
     subtree: true,
+    attributeFilter: ['class'],
   })
+
+  // css class for hidden elements
+  $(String.raw`
+    <style type='text/css'>
+        .shitter-hidden {
+            filter: blur(10px) grayscale(1);
+            opacity: 0.2;
+            transition: filter 300ms cubic-bezier(.22,.61,.36,1),
+                        opacity 300ms cubic-bezier(.22,.61,.36,1);
+        }
+        .shitter-hidden:hover {
+            filter: none;
+            opacity: 1;
+        }
+    </style>
+  `).appendTo('head')
 })()

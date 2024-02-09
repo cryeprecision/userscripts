@@ -1,16 +1,17 @@
-import { merge } from "webpack-merge";
-import base from "./base";
-import path from "node:path";
+import { merge } from 'webpack-merge'
+import base from './base'
+import path from 'node:path'
 
 export default merge(base, {
-  mode: "production",
+  mode: 'production',
   cache: {
-    type: "filesystem",
-    name: "prod",
+    type: 'filesystem',
+    name: 'prod',
   },
   output: {
-    path: path.resolve(".", "userscripts"),
-    filename: "[name].prod.user.js",
+    path: path.resolve('.', 'userscripts'),
+    filename: '[name].prod.user.js',
   },
-  watchOptions: { ignored: /node_modules/ },
-});
+  watch: true,
+  watchOptions: { ignored: ['node_modules', 'userscripts'] },
+})
