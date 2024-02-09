@@ -44,12 +44,16 @@ export class ExtractPosts extends Extractor<Post> {
       return null
     }
 
-    if (!$(addedNode).is('div.post-stream')) {
+    const postDivs = (() => {
+      if ($(addedNode).is('div.topic-post')) {
+        return [addedNode]
+      }
+      if ($(addedNode).is('div.post-stream')) {
+        return $(addedNode).find('> div.topic-post').toArray()
+      }
       return null
-    }
-
-    const postDivs = $(addedNode).find('> div.topic-post').toArray()
-    if (postDivs.length === 0) {
+    })()
+    if (postDivs === null || postDivs.length === 0) {
       return null
     }
 
