@@ -12,20 +12,20 @@ const makeImage = (imageUrl: string): JQuery<HTMLElement> => {
 const onBodyMutations: Record<string, MutationCallback> = {
   add_new_images: (mutations, observer) => {
     for (const mutation of mutations) {
-      if (!$(mutation.target).attr('id')?.startsWith('gallery-img-')) continue
+      if (!($(mutation.target).attr('id')?.startsWith('gallery-img-') ?? false)) continue
       if ($(mutation.target).closest('div.overlay-image-gallery').length === 0) continue
 
       for (const added of mutation.addedNodes) {
         if (!$(added).is('img')) continue
 
         const url = $(added).attr('data-lazy')
-        if (!url) continue
+        if (url === undefined) continue
 
         const imageIdx = $(added).parent().attr('id')?.substring('gallery-img-'.length)
-        if (!imageIdx) continue
+        if (imageIdx === undefined) continue
 
         const imageCount = $(added).parents().eq(1).attr('data-image-count')
-        if (!imageCount) continue
+        if (imageCount === undefined) continue
 
         $('div.cBox--vehicle-details > div.cBox-body').append(makeImage(url))
 

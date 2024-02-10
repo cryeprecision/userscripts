@@ -12,5 +12,6 @@ export default merge(base, {
     path: path.resolve('.', 'userscripts'),
     filename: '[name].prod.user.js',
   },
-  watch: false,
+  watch: true,
+  watchOptions: { ignored: ['node_modules', 'userscripts'] },
 })

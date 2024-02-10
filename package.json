@@ -6,8 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack/prod.ts",
     "build-min": "webpack --config webpack/prod-min.ts",
+    "build-watch": "webpack --config webpack/prod-watch.ts",
     "dev": "webpack --config webpack/dev.ts",
-    "build:watch": "webpack --watch",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [
