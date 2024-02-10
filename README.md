@@ -2,6 +2,10 @@
 
 Based on [github.com/pboymt/userscript-typescript-template](https://github.com/pboymt/userscript-typescript-template).
 
+## How to Use
+
+Check [`docs`](docs/README.md)
+
 ## How it Works
 
 ### Scripts
