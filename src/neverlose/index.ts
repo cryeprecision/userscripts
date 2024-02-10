@@ -55,7 +55,8 @@ const onBodyMutation: MutationCallback = (mutations) => {
     gFilter.forbiddenUsers.length === 0 &&
     gFilter.forbiddenCategories.length === 0
   ) {
-    console.warn('neverlose filter config is empty, set values in the browser local storage')
+    console.error('neverlose filter config is empty, set values in the browser local storage')
+    return
   }
 
   // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/MutationObserver

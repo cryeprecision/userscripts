@@ -103,8 +103,13 @@ dist
 # TernJS port file
 .tern-port
 
-# Custom files
-/userscripts/*.js
+# Compiled userscripts
+/userscripts/*
+!/userscripts/.gitkeep
+
+# Custom configurations
+/config/*
+!/config/.gitkeep
 
 # Yarn modern
 .pnp.*
