@@ -20,7 +20,14 @@
   "dependencies": {
     "dayjs": "^1.11.10",
     "jquery": "^3.7.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "zod": "^3.22.4"
+  },
+  "dependenciesJsDelivr": {
+    "dayjs": "https://cdn.jsdelivr.net/npm/dayjs@1.11.10/dayjs.min.js",
+    "jquery": "https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js",
+    "lodash": "https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js",
+    "zod": "https://cdn.jsdelivr.net/npm/zod@3.22.4/lib/index.umd.min.js"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.29",
@@ -39,8 +46,7 @@
     "typescript": "^5.3.3",
     "webpack": "^5.90.1",
     "webpack-cli": "^5.1.4",
-    "webpack-merge": "^5.10.0",
-    "zod": "^3.22.4"
+    "webpack-merge": "^5.10.0"
   },
   "userscripts": {
     "neverlose": {

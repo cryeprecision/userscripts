@@ -10,7 +10,9 @@ const getProjects = (): Dirent[] => {
 
 const config: Configuration = {
   entry: Object.fromEntries(
-    getProjects().map((entry) => [entry.name, `./src/${entry.name}/index.ts`]),
+    getProjects().map((entry) => {
+      return [entry.name, `./src/${entry.name}/index.ts`]
+    }),
   ),
   target: 'web',
   resolve: { extensions: ['.ts', '.js'] },
@@ -27,6 +29,7 @@ const config: Configuration = {
     jquery: '$',
     dayjs: 'dayjs',
     lodash: '_',
+    zod: 'Zod',
   },
   optimization: {
     // https://greasyfork.org/en/help/code-rules

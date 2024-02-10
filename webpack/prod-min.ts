@@ -29,7 +29,6 @@ export default merge(base, {
     filename: '[name].prod-min.user.js',
   },
   optimization: {
-    // https://greasyfork.org/en/help/code-rules
     minimize: true,
     minimizer: [
       new TerserPlugin({

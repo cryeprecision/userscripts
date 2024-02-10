@@ -4,13 +4,18 @@ Based on [github.com/pboymt/userscript-typescript-template](https://github.com/p
 
 ## How it Works
 
-- Each directory in `./src/<name>` that is *not* `./src/lib` represents a independent script that
-  uses the entrypoint `./src/<name>/index.ts` and will be compiled to
-  `./userscripts/<name>.<prod|dev>.user.js`.
-- Dependencies are external and should be marked as such in `./webpack/base.ts` to avoid the
-  dependency being inlined into the compiled userscript. Dependencies (not `devDependencies`) from
-  the `./package.json` will be appended to the userscript header in
-  `./plugins/userscript.plugin.ts`.
+### Scripts
+
+- Each directory in `src/<name>` that is **not** `src/lib` represents an independent script.
+- In `userscripts.json`, each script must have an entry with the key `<name>`
+- Each script uses the **entrypoint** `src/<name>/index.ts`.
+- Each script will be **compiled to** `userscripts/<name>.<mode>.user.js`.
+
+### Dependencies
+
+- In `package.json`, each `dependencies`-entry must have a corresponding `dependenciesJsDelivr`-entry
+- Dependencies must be external have to be marked as such in `webpack/base.ts`.
+  - This avoids the dependency being inlined into the compiled userscript.
 
 ## To Do
 

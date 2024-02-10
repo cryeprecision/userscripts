@@ -1,10 +1,12 @@
-export type Filter = {
-  forbiddenTags: string[]
-  forbiddenTitleWords: string[]
-  forbiddenUsers: string[]
-  forbiddenCategories: string[]
-  maxAgeSinceCreationSeconds?: number
-}
+import { z } from 'zod'
+
+export const FilterSchema = z.object({
+  forbiddenTags: z.array(z.string()),
+  forbiddenTitleWords: z.array(z.string()),
+  forbiddenUsers: z.array(z.string()),
+  forbiddenCategories: z.array(z.string()),
+})
+export type Filter = z.infer<typeof FilterSchema>
 
 const any = <T>(shits: T[], shitFn: (shit: T) => boolean): boolean => {
   for (const shit of shits) {

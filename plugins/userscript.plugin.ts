@@ -20,6 +20,7 @@ export type UserScript = z.infer<typeof UserScriptSchema>
 const PackageJsonSchema = z.object({
   userscripts: z.record(z.string(), UserScriptSchema),
   dependencies: z.record(z.string(), z.string()).optional(),
+  dependenciesJsDelivr: z.record(z.string(), z.string()).optional(),
 })
 
 type BannerInfo = {
@@ -29,7 +30,7 @@ type BannerInfo = {
 }
 
 export const generateHeader = (info: BannerInfo): string => {
-  if (!info.chunk.name) {
+  if (info.chunk.name === undefined) {
     throw new Error('[generateHeader] found chunk without name')
   }
 
@@ -48,19 +49,19 @@ export const generateHeader = (info: BannerInfo): string => {
   headers.push(`// @name ${userscript.name}`)
   headers.push(`// @version ${userscript.version}`)
 
-  if (userscript.namespace) {
+  if (userscript.namespace !== undefined) {
     headers.push(`// @namespace ${userscript.namespace}`)
   }
 
-  if (userscript.description) {
+  if (userscript.description !== undefined) {
     headers.push(`// @description ${userscript.description}`)
   }
 
-  if (userscript.author) {
+  if (userscript.author !== undefined) {
     headers.push(`// @author ${userscript.author}`)
   }
 
-  if (userscript.icon) {
+  if (userscript.icon !== undefined) {
     headers.push(`// @icon ${userscript.icon}`)
   }
 
@@ -77,15 +78,20 @@ export const generateHeader = (info: BannerInfo): string => {
    * You can also set the string template with the parameters "{dependencyName}" and "{dependencyVersion}"
    * in the "require-template" field of the "userscript" object in the "package.json" file.
    */
-  if (packageJson.dependencies) {
-    const requireTemplate =
-      '// @require https://cdn.jsdelivr.net/npm/{dependencyName}@{dependencyVersion}'
-    for (const [dependencyName, dependencyVersion] of Object.entries(packageJson.dependencies)) {
-      headers.push(
-        requireTemplate
-          .replace('{dependencyName}', dependencyName)
-          .replace('{dependencyVersion}', dependencyVersion.replace(/^[\^~]/, '')),
-      )
+  if (packageJson.dependencies !== undefined) {
+    if (packageJson.dependenciesJsDelivr === undefined) {
+      throw new Error("[generateHeader] dependencies exist but dependenciesJsDelivr don't")
+    }
+    // make sure all keys are in both records
+    for (const key of Object.keys(packageJson.dependencies)) {
+      if (!(key in packageJson.dependenciesJsDelivr)) {
+        throw new Error(`[generateHeader] dependency ${key} is missing in dependenciesJsDelivr`)
+      }
+    }
+
+    // '// @require https://cdn.jsdelivr.net/npm/{dependencyName}@{dependencyVersion}'
+    for (const dependencyName of Object.keys(packageJson.dependencies)) {
+      headers.push(`// @require ${packageJson.dependenciesJsDelivr[dependencyName]}`)
     }
   }
 
@@ -95,11 +101,11 @@ export const generateHeader = (info: BannerInfo): string => {
     }
   }
 
-  if (userscript.run_at) {
+  if (userscript.run_at !== undefined) {
     headers.push(`// @run-at ${userscript.run_at}`)
   }
 
-  if (userscript.grant) {
+  if (userscript.grant !== undefined) {
     for (const grant of userscript.grant) {
       headers.push(`// @grant ${grant}`)
     }

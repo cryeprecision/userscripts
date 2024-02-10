@@ -1,14 +1,14 @@
 export {}
 
+import { loadOrStoreDefault } from '../lib'
 import { ExtractPosts, ExtractThreads, Extractor } from './extract'
-import { Filter, Filterable } from './filter'
+import { Filter, FilterSchema, Filterable } from './filter'
 
-const gFilter: Filter = {
-  forbiddenTags: ['Configs', 'Official Reselling', 'Русский'],
-  forbiddenTitleWords: ['hwid', 'crash', 'aa', 'cfg', 'config'],
-  forbiddenUsers: ['bingaan'],
-  forbiddenCategories: ['cs2-configs-cs2', 'offtop-17-category', 'reselling'],
-  maxAgeSinceCreationSeconds: 60 * 60 * 24 * 7,
+let gFilter: Filter = {
+  forbiddenTags: [],
+  forbiddenTitleWords: [],
+  forbiddenUsers: [],
+  forbiddenCategories: [],
 }
 
 const gExtractors: Extractor[] = [new ExtractPosts(), new ExtractThreads()]
@@ -48,6 +48,16 @@ const onBodyMutation: MutationCallback = (mutations) => {
 }
 
 ;(() => {
+  gFilter = loadOrStoreDefault(FilterSchema, 'neverlose-filter', gFilter)
+  if (
+    gFilter.forbiddenTags.length === 0 &&
+    gFilter.forbiddenTitleWords.length === 0 &&
+    gFilter.forbiddenUsers.length === 0 &&
+    gFilter.forbiddenCategories.length === 0
+  ) {
+    console.warn('neverlose filter config is empty, set values in the browser local storage')
+  }
+
   // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/MutationObserver
   const observer = new MutationObserver(onBodyMutation)
 
