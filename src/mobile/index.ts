@@ -60,16 +60,13 @@ const onBodyMutations: Record<string, MutationCallback> = {
     </style>
   `).appendTo('head')
 
-  // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/MutationObserver
-  const observers = Object.values(onBodyMutations).map((callback) => {
-    return new MutationObserver(callback)
+  const observer = new MutationObserver((mutations, observer) => {
+    Object.values(onBodyMutations).forEach((callback) => {
+      callback(mutations, observer)
+    })
   })
-
-  // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver/observe
-  observers.forEach((observer) =>
-    observer.observe(document.querySelector('body')!, {
-      childList: true,
-      subtree: true,
-    }),
-  )
+  observer.observe(document.querySelector('body')!, {
+    childList: true,
+    subtree: true,
+  })
 })()

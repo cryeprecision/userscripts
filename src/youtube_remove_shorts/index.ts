@@ -13,14 +13,13 @@ const onBodyMutations: Record<string, MutationCallback> = {
 }
 
 ;(() => {
-  const observers = Object.values(onBodyMutations).map((callback) => {
-    return new MutationObserver(callback)
+  const observer = new MutationObserver((mutations, observer) => {
+    Object.values(onBodyMutations).forEach((callback) => {
+      callback(mutations, observer)
+    })
   })
-
-  observers.forEach((observer) =>
-    observer.observe(document.querySelector('body')!, {
-      childList: true,
-      subtree: true,
-    }),
-  )
+  observer.observe(document.querySelector('body')!, {
+    childList: true,
+    subtree: true,
+  })
 })()
