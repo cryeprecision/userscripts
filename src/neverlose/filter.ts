@@ -5,6 +5,7 @@ export const FilterSchema = z.object({
   forbiddenTitleWords: z.array(z.string()),
   forbiddenUsers: z.array(z.string()),
   forbiddenCategories: z.array(z.string()),
+  maxThreadAgeMs: z.number().int().optional(),
 })
 export type Filter = z.infer<typeof FilterSchema>
 
@@ -17,7 +18,7 @@ const any = <T>(shits: T[], shitFn: (shit: T) => boolean): boolean => {
   return false
 }
 
-export class Filterable {
+export abstract class Filterable {
   /**
    * The node that should be mutated if this doesn't pass the filter
    */
@@ -33,12 +34,12 @@ export class Filterable {
   /**
    * Check if this thingy passes the filter or not
    */
-  public passesFilter(_filter: Filter): boolean {
-    return false
-  }
+  public abstract passesFilter(_filter: Filter): boolean
 
   /**
    * What to do if this thingy doesn't pass the filter
+   *
+   * Default implementation is to add the `shitter-hidden`-class
    */
   public filterOut(): void {
     if (!$(this.node).hasClass('shitter-hidden')) {
@@ -105,6 +106,13 @@ export class Thread extends Filterable {
     }
 
     if (any(filter.forbiddenTitleWords, (word) => this.title.includes(word))) {
+      return false
+    }
+
+    if (
+      filter.maxThreadAgeMs !== undefined &&
+      new Date().getTime() - this.crated > filter.maxThreadAgeMs
+    ) {
       return false
     }
 

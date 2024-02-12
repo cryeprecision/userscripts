@@ -16,7 +16,7 @@ export type Age = {
  */
 const parseDate = (str: string): number | null => {
   const parsed = dayjs(str, 'MMM D, YYYY h:mm a')
-  return parsed.isValid() ? parsed.unix() : null
+  return parsed.isValid() ? parsed.toDate().getTime() : null
 }
 
 /**
